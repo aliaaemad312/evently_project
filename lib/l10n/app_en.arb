@@ -21,5 +21,6 @@
   "exhibition": "Exhibition",
   "holiday": "Holiday",
   "eating": "Eating",
-  "start": "Let’s Start"
+  "start": "Let’s Start",
+  "search_event": "Search for Event"
 }
