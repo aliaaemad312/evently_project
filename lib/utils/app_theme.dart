@@ -22,7 +22,8 @@ class AppTheme{
             borderRadius: BorderRadius.only(bottomRight: Radius.circular(30),bottomLeft: Radius.circular(30))
         ),
       backgroundColor: AppColors.primaryLight
-    )
+    ),
+
 
 
   );

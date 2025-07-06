@@ -16,4 +16,5 @@ class AppAssets{
   static const String lightThemeIcon='assets/images/light_theme_icon.png';
   static const String birthdayImage='assets/images/birthday_light.png';
   static const String favIcon='assets/images/fav_icon.png';
+  static const String searchIcon='assets/images/search_icon.png';
 }
