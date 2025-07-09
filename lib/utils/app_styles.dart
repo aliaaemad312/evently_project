@@ -95,10 +95,23 @@ class AppStyles{
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
+  static TextStyle bold16Black = GoogleFonts.inter(
+    color: AppColors.blackColor,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
 
   static TextStyle bold16Primary = GoogleFonts.inter(
     color: AppColors.primaryLight,
     fontSize: 16,
     fontWeight: FontWeight.bold,
+  );
+  static TextStyle boldItalic16Primary = GoogleFonts.inter(
+    color: AppColors.primaryLight,
+    fontSize: 16,
+    fontStyle: FontStyle.italic,
+    fontWeight: FontWeight.bold,
+    decoration: TextDecoration.underline,
+    decorationColor: AppColors.primaryLight,
   );
 }

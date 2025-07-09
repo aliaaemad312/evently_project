@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FavouriteTab extends StatelessWidget {
-  const FavouriteTab({super.key});
+   FavouriteTab({super.key});
+   TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +19,15 @@ class FavouriteTab extends StatelessWidget {
           body: Column(
                 children: [
                   SizedBox(height: height*0.02,),
-          CustomTextFormField(colorBorderSide: AppColors.primaryLight,
-          hintText: AppLocalizations.of(context)!.search_event,
-          hintStyle: AppStyles.bold14Primary,
-            prefixIcon: ImageIcon(AssetImage(AppAssets.searchIcon),color: AppColors.primaryLight,)
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: width*0.04),
+            child: CustomTextFormField(
+                controller:searchController  ,
+                colorBorderSide: AppColors.primaryLight,
+            hintText: AppLocalizations.of(context)!.search_event,
+            hintStyle: AppStyles.bold14Primary,
+              prefixIcon: ImageIcon(AssetImage(AppAssets.searchIcon),color: AppColors.primaryLight,)
+            ),
           ),
           Expanded(
               child: ListView.separated(
