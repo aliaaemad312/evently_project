@@ -1,6 +1,7 @@
 
 import 'package:evently_app/ui/home/tabs/language/language_bottom_sheet.dart';
 import 'package:evently_app/ui/home/tabs/theme/theme_bottom_sheet.dart';
+import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
 import 'package:evently_app/utils/app_assets.dart';
 import 'package:evently_app/utils/app_colors.dart';
 import 'package:evently_app/utils/app_styles.dart';
@@ -120,25 +121,20 @@ class _ProfileTabState extends State<ProfileTab> {
               ),
             ),
             Spacer(),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.redColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: height*0.02,
-                        horizontal: width*0.04)
-
-                ),
+            CustomElevatedButton(
                 onPressed: (){},
-                child: Row(
-                  children: [
-                    Icon(Icons.logout,color: AppColors.whiteColor,size: 30,),
-                    SizedBox(width: 0.03,),
-                    Text(AppLocalizations.of(context)!.logout,style: AppStyles.regular20White,
-                    )
-                  ],
-                ))
+                backgroundColor: AppColors.redColor,
+                borderColor: AppColors.redColor,
+                icon: true,
+                iconWidget: Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: width*0.02),
+                  child: Icon(Icons.logout,
+                  color: AppColors.whiteBgColor,
+                  size: 24,),
+                ),
+                text: AppLocalizations.of(context)!.logout)
+            
+            
 
           ],
         ),
@@ -158,3 +154,23 @@ class _ProfileTabState extends State<ProfileTab> {
 
 }
 
+/*
+ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.redColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: height*0.02,
+                        horizontal: width*0.04)
+
+                ),
+                onPressed: (){},
+                child: Row(
+                  children: [
+                    Icon(Icons.logout,color: AppColors.whiteColor,size: 30,),
+                    SizedBox(width: 0.03,),
+                    Text(AppLocalizations.of(context)!.logout,style: AppStyles.regular20White,
+                    )
+                  ],
+                ))*/

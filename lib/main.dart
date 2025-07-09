@@ -1,6 +1,8 @@
 
 import 'package:evently_app/providers/app_language_provider.dart';
 import 'package:evently_app/providers/app_theme_provider.dart';
+import 'package:evently_app/ui/auth/login/login_screen.dart';
+import 'package:evently_app/ui/auth/register/register_screen.dart';
 import 'package:evently_app/ui/home/home_screen.dart';
 import 'package:evently_app/ui/onboarding/intro_screen.dart';
 import 'package:evently_app/ui/onboarding/onboarding_screen.dart';
@@ -34,6 +36,8 @@ class MyApp extends StatelessWidget {
         AppRoutes.homeRouteName:(context)=>HomeScreen(),
         AppRoutes.introRouteName:(context)=>OnboardingScreen(),
         AppRoutes.firstRouteName:(context)=>IntroScreen(),
+        AppRoutes.loginRouteName:(context)=>LoginScreen(),
+        AppRoutes.registerRouteName:(context)=>RegisterScreen(),
 
       },
       locale: Locale(languageProvider.appLanguage),
