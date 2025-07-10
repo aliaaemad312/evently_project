@@ -19,7 +19,7 @@ class EventItem extends StatelessWidget {
         border: Border.all(color: AppColors.primaryLight,
         width: 2),
         image: DecorationImage(
-            image: AssetImage(AppAssets.birthdayImage),fit: BoxFit.fill)
+            image: AssetImage(AppAssets.birthdayLight),fit: BoxFit.fill)
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

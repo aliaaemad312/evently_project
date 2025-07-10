@@ -40,5 +40,17 @@
   "please_enter_valid_email": "رجاءا ادخل بريد الكتروني صحيح",
   "please_enter_password": "رجاءا ادخل كلمة السر",
   "please_enter_valid_password": "كلمة السر يجب ألا تقل عن 6 أحرف",
-  "please_enter_name": "رجاءا ادخل الاسم"
+  "please_enter_name": "رجاءا ادخل الاسم",
+  "create_event": "أنشئ حدث",
+  "title": "العنوان",
+  "event_title": "عنوان الحدث",
+  "description": "الوصف",
+  "event_description": "وصف الحدث",
+  "event_date": "تاريخ الحدث",
+  "event_time": "وقت الحدث",
+  "choose_date": "اختر التاريخ",
+  "choose_time": "اختر الوقت",
+  "location": "الموقع",
+  "choose_event_location":"اختر موقع الحدث",
+  "add_event": "أضف حدث"
 }

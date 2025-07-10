@@ -8,6 +8,7 @@ class AppTheme{
   static final ThemeData lightTheme=ThemeData(
     primaryColor: AppColors.primaryLight,
       focusColor: AppColors.whiteBgColor,
+    dividerColor: AppColors.blackColor,
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColors.whiteBgColor,
       ),
@@ -15,7 +16,9 @@ class AppTheme{
       textTheme: TextTheme(
           headlineLarge: AppStyles.bold20Black,
           headlineMedium: AppStyles.medium16Primary,
-        headlineSmall: AppStyles.medium16White
+        headlineSmall: AppStyles.medium16White,
+        titleMedium: AppStyles.medium16Black,
+        bodyMedium: AppStyles.medium16Grey
       ),
     appBarTheme: AppBarTheme(
         shape: RoundedRectangleBorder(
@@ -31,6 +34,7 @@ class AppTheme{
   static final ThemeData darkTheme=ThemeData(
     primaryColor: AppColors.primaryDark,
       focusColor: AppColors.primaryLight,
+      dividerColor: AppColors.whiteBgColor,
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColors.whiteBgColor,
       ),
@@ -38,7 +42,9 @@ class AppTheme{
       textTheme: TextTheme(
           headlineLarge: AppStyles.bold20White,
           headlineMedium: AppStyles.medium16White,
-          headlineSmall: AppStyles.medium16White
+          headlineSmall: AppStyles.medium16White,
+        titleMedium: AppStyles.medium16White,
+          bodyMedium: AppStyles.medium16White
       ),
       appBarTheme: AppBarTheme(
           backgroundColor: AppColors.primaryDark,
