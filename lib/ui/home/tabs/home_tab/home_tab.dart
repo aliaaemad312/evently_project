@@ -87,7 +87,11 @@ class _HomeTabState extends State<HomeTab> {
                       labelPadding: EdgeInsets.zero,
                       dividerColor: AppColors.transparentColor,
                       tabs: eventNameList.map((eventName) {
-                    return EventTabItem(isSelected: selectedIndex==eventNameList.indexOf(eventName), eventName: eventName);
+                    return EventTabItem(selectedBgColor: Theme.of(context).focusColor,
+                        selectedTextStyle: Theme.of(context).textTheme.headlineMedium!,
+                        unSelectedTextStyle: Theme.of(context).textTheme.headlineSmall!,
+
+                        isSelected: selectedIndex==eventNameList.indexOf(eventName), eventName: eventName);
                   },).toList()
                   )
               )

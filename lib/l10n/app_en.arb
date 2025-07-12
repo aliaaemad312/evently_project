@@ -40,5 +40,17 @@
   "please_enter_valid_email": "Please Enter Valid Email",
   "please_enter_password": "Please Enter Password",
   "please_enter_valid_password": "Password must be at least 6 characters",
-  "please_enter_name": "Please Enter Name"
+  "please_enter_name": "Please Enter Name",
+  "create_event": "Create Event",
+  "title": "Title",
+  "event_title": "Event Title",
+  "description": "Description",
+  "event_description": "Event Description",
+  "event_date": "Event Date",
+  "event_time": "Event Time",
+  "choose_date": "Choose Date",
+  "choose_time": "Choose Time",
+  "location": "Location",
+  "choose_event_location":"Choose Event Location",
+  "add_event": "Add Event"
 }

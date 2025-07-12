@@ -5,6 +5,7 @@ import 'package:evently_app/ui/home/tabs/map/map_tab.dart';
 import 'package:evently_app/ui/home/tabs/profile/profile_tab.dart';
 import 'package:evently_app/utils/app_assets.dart';
 import 'package:evently_app/utils/app_colors.dart';
+import 'package:evently_app/utils/app_routes.dart';
 import 'package:evently_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,7 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
       AppLocalizations.of(context)!.favourite,
       AppLocalizations.of(context)!.profile];
     return Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () { },
+        floatingActionButton: FloatingActionButton(onPressed: () { 
+          Navigator.of(context).pushNamed(AppRoutes.addEventRouteName);
+        },
           backgroundColor: Theme.of(context).primaryColor,
           shape: StadiumBorder(side: BorderSide(color: AppColors.whiteColor,width: 5,)),
           child: Icon(Icons.add,size: 35,color: AppColors.whiteColor,),

@@ -14,7 +14,6 @@ class AppAssets{
   static const String favUnselectedIcon='assets/images/fav_unselected_icon.png';
   static const String profileUnselectedIcon='assets/images/profile_unselected_icon.png';
   static const String lightThemeIcon='assets/images/light_theme_icon.png';
-  static const String birthdayImage='assets/images/birthday_light.png';
   static const String favIcon='assets/images/fav_icon.png';
   static const String searchIcon='assets/images/search_icon.png';
   static const String logo='assets/images/Logo.png';
@@ -32,6 +31,28 @@ class AppAssets{
   static const String introDark1='assets/images/intro_dark1.png';
   static const String introDark3='assets/images/intro_dark3.png';
   static const String introDark4='assets/images/intro_dark4.png';
+  static const String birthdayLight='assets/images/birthday_light.png';
+  static const String bookClubLight='assets/images/book_club_light.png';
+  static const String eatingLight='assets/images/eating_light.png';
+  static const String exhibitionLight='assets/images/exhibition_light.png';
+  static const String gamingLight='assets/images/gaming_light.png';
+  static const String holidayLight='assets/images/holiday_light.png';
+  static const String meetingLight='assets/images/meeting_light.png';
+  static const String sportLight='assets/images/sport_light.png';
+  static const String workshopLight='assets/images/workshop_light.png';
+  static const String bookClubDark='assets/images/book_club_dark.png';
+  static const String eatingDark='assets/images/eating_dark.png';
+  static const String exhibitionDark='assets/images/exhibition_dark.png';
+  static const String gamingDark='assets/images/gaming_dark.png';
+  static const String holidayDark='assets/images/holiday_dark.png';
+  static const String meetingDark='assets/images/meeting_dark.png';
+  static const String sportDark='assets/images/sport_dark.png';
+  static const String workshopDark='assets/images/workshop_dark.png';
+  static const String birthdayDark='assets/images/birthday_dark.png';
+  static const String editIcon='assets/images/edit_icon.png';
+  static const String dateIcon='assets/images/date_icon.png';
+  static const String timeIcon='assets/images/time_icon.png';
+  static const String locationIcon='assets/images/location_icon.png';
 
 
 
