@@ -31,7 +31,7 @@ class AppThemeProvider extends ChangeNotifier{
     notifyListeners();
     
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(AppThemeProvider.themeKey, appTheme==ThemeMode.light?true:false);
+    prefs.setBool(AppThemeProvider.themeKey, newTheme==ThemeMode.light?true:false);
     
     
     
