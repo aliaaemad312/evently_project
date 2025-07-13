@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import '../../../providers/app_theme_provider.dart';
+
 class LoginScreen extends StatefulWidget {
    LoginScreen({super.key});
 
@@ -29,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;
     var languageProvide= Provider.of<AppLanguageProvider>(context);
+    var themeProvider= Provider.of<AppThemeProvider>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -47,7 +50,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     CustomTextFormField(
                       hintText: AppLocalizations.of(context)!.email,
-                      prefixIcon: Image.asset(AppAssets.emailIcon),
+                      colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
+                      hintStyle: Theme.of(context).textTheme.bodyMedium,
+                      prefixIcon: Image.asset(AppAssets.emailIcon,
+                        color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
                     controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (text) {
@@ -70,12 +76,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     CustomTextFormField(
                       obscureText: true,
                       obscuringCharacter: '*',
+                      colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
                       hintText: AppLocalizations.of(context)!.password,
-                      prefixIcon: Image.asset(AppAssets.passwordIcon),
+                      hintStyle: Theme.of(context).textTheme.bodyMedium,
+                      prefixIcon: Image.asset(AppAssets.passwordIcon,
+                        color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
                       suffixIcon: InkWell(onTap: (){
 
                       },
-                          child: Image.asset(AppAssets.hidePassIcon)),
+                          child: Image.asset(AppAssets.hidePassIcon,
+                            color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,)),
                       controller:passwordController ,
                       validator: (text) {
                         if(text==null || text.trim().isEmpty){
@@ -109,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(AppLocalizations.of(context)!.no_account,
-                          style: AppStyles.medium16Black,),
+                          style: Theme.of(context).textTheme.titleMedium,),
                         SizedBox(width: width*0.01,),
                         InkWell(
                           onTap: (){

@@ -53,6 +53,7 @@ class AppAssets{
   static const String dateIcon='assets/images/date_icon.png';
   static const String timeIcon='assets/images/time_icon.png';
   static const String locationIcon='assets/images/location_icon.png';
+  static const String forgetPasswordImage='assets/images/forget_password.png';
 
 
 

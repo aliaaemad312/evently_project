@@ -24,13 +24,14 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
       current: !isDark,
       values: [true,false],
       onChanged: (value) {
-        var newTheme=value? themeProvider.appTheme=ThemeMode.light:themeProvider.appTheme=ThemeMode.dark;
-        themeProvider.changeTheme(newTheme);
+        themeProvider.changeTheme(value ? ThemeMode.light : ThemeMode.dark);
       },
 
       iconBuilder: (value, isSelected) {
-        return Image.asset(
-          value  ? AppAssets.lightIcon : AppAssets.darkIcon,
+        return
+          Image.asset(
+          value? AppAssets.lightIcon : AppAssets.darkIcon,
+          color: isSelected?Theme.of(context).hoverColor:AppColors.primaryLight  ,
           width: 32,
           height: 32,
         );

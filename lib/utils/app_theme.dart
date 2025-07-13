@@ -9,6 +9,8 @@ class AppTheme{
     primaryColor: AppColors.primaryLight,
       focusColor: AppColors.whiteBgColor,
     dividerColor: AppColors.blackColor,
+      hoverColor: AppColors.whiteBgColor,
+    canvasColor: AppColors.blackColor,
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColors.whiteBgColor,
       ),
@@ -18,7 +20,8 @@ class AppTheme{
           headlineMedium: AppStyles.medium16Primary,
         headlineSmall: AppStyles.medium16White,
         titleMedium: AppStyles.medium16Black,
-        bodyMedium: AppStyles.medium16Grey
+        bodyMedium: AppStyles.medium16Grey,
+        labelMedium: AppStyles.bold20Black
       ),
     appBarTheme: AppBarTheme(
         shape: RoundedRectangleBorder(
@@ -35,6 +38,8 @@ class AppTheme{
     primaryColor: AppColors.primaryDark,
       focusColor: AppColors.primaryLight,
       dividerColor: AppColors.whiteBgColor,
+      hoverColor: AppColors.primaryDark,
+      canvasColor: AppColors.primaryLight,
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColors.whiteBgColor,
       ),
@@ -44,7 +49,8 @@ class AppTheme{
           headlineMedium: AppStyles.medium16White,
           headlineSmall: AppStyles.medium16White,
         titleMedium: AppStyles.medium16White,
-          bodyMedium: AppStyles.medium16White
+          bodyMedium: AppStyles.medium16White,
+          labelMedium: AppStyles.bold20primary
       ),
       appBarTheme: AppBarTheme(
           backgroundColor: AppColors.primaryDark,

@@ -27,7 +27,7 @@
   "email": "البريد الالكتروني",
   "password": "كلمة المرور",
   "login": "تسجيل الدخول",
-  "forget_password": "نسيت كلمة المرور؟",
+  "forget_password": "نسيت كلمة المرور",
   "no_account": "لا تمتلك حساب؟",
   "create_account": "أنشئ حساب",
   "login_google": "تسجيل الدخول بواسطة Google",

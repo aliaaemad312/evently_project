@@ -5,7 +5,9 @@ import 'package:evently_app/utils/app_colors.dart';
 import 'package:evently_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
+import '../../../providers/app_theme_provider.dart';
 import '../../../utils/app_routes.dart';
 import '../../switchers/language_switcher.dart';
 
@@ -31,13 +33,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;
+    var themeProvider= Provider.of<AppThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.transparentColor,
         elevation: 0,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).canvasColor
+        ),
         title: Text(AppLocalizations.of(context)!.register,
-        style: AppStyles.bold20Black,),
+        style: Theme.of(context).textTheme.labelMedium,),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -55,7 +61,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   CustomTextFormField(
                     hintText: AppLocalizations.of(context)!.name,
-                    prefixIcon: Image.asset(AppAssets.nameIcon),
+                    colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
+                    prefixIcon: Image.asset(AppAssets.nameIcon,
+                      color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
                     controller: nameController,
                     validator: (text) {
                       if(text==null || text.trim().isEmpty){
@@ -69,7 +78,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: height*0.02,),
                   CustomTextFormField(
                     hintText: AppLocalizations.of(context)!.email,
-                    prefixIcon: Image.asset(AppAssets.emailIcon),
+                    colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
+                    prefixIcon: Image.asset(AppAssets.emailIcon,
+                      color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
                   controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     validator: (text) {
@@ -93,11 +105,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     obscureText: true,
                     obscuringCharacter: '*',
                     hintText: AppLocalizations.of(context)!.password,
-                    prefixIcon: Image.asset(AppAssets.passwordIcon),
+                    colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
+                    prefixIcon: Image.asset(AppAssets.passwordIcon,
+                      color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
                     suffixIcon: InkWell(onTap: (){
 
                     },
-                        child: Image.asset(AppAssets.hidePassIcon)),
+                        child: Image.asset(AppAssets.hidePassIcon,
+                          color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,)),
                     controller:passwordController ,
                     validator: (text) {
                       if(text==null || text.trim().isEmpty){
@@ -116,13 +132,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextFormField(
                     obscureText: true,
                     obscuringCharacter: '*',
+                    colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
                     keyboardType: TextInputType.number,
                     hintText: AppLocalizations.of(context)!.re_password,
-                    prefixIcon: Image.asset(AppAssets.passwordIcon),
+                    prefixIcon: Image.asset(AppAssets.passwordIcon,
+                      color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
                     suffixIcon: InkWell(onTap: (){
 
                     },
-                        child: Image.asset(AppAssets.hidePassIcon)),
+                        child: Image.asset(AppAssets.hidePassIcon,
+                          color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,)),
                     controller:rePasswordController ,
                     validator: (text) {
                       if(text==null || text.trim().isEmpty){
@@ -149,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(AppLocalizations.of(context)!.have_account,
-                        style: AppStyles.medium16Black,),
+                        style: Theme.of(context).textTheme.titleMedium,),
                       SizedBox(width: width*0.01,),
                       InkWell(
                         onTap: (){
