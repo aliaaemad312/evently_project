@@ -52,5 +52,15 @@
   "choose_time": "اختر الوقت",
   "location": "الموقع",
   "choose_event_location":"اختر موقع الحدث",
-  "add_event": "أضف حدث"
+  "add_event": "أضف حدث",
+  "please_enter_event_title": "رجاءا ادخل عنوان الحدث",
+  "please_add_description": "رجاءا اضف وصف للحدث",
+  "event_added_successfully": "تم اضافة الحدث بنجاح",
+  "no_events_found": "لا توجد أحداث بعد",
+  "event_updated_successfully": "تم تحديث الحدث بنجاح",
+  "no_favourite_events_found": "لا توجد أحداث مفضلة بعد",
+  "event_details": "تفاصيل الحدث",
+  "edit_event": "تعديل الحدث",
+  "update_event": "تجديد الحدث",
+  "event_deleted_successfully": "تم حذف الحدث"
 }

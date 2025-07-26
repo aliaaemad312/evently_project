@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently_app/firebase_utils.dart';
+import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/providers/event_list_provider.dart';
 import 'package:evently_app/ui/home/tabs/home_tab/widget/event_item.dart';
 import 'package:evently_app/ui/home/tabs/home_tab/widget/event_tab_item.dart';
 import 'package:evently_app/utils/app_assets.dart';
 import 'package:evently_app/utils/app_colors.dart';
 import 'package:evently_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../model/event.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -14,25 +20,21 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  int selectedIndex=0;
+
+
+
   @override
   Widget build(BuildContext context) {
+    var eventListProvider=Provider.of<EventListProvider>(context);
+    eventListProvider.getEventNameList(context);
+    if(eventListProvider.eventsList.isEmpty){
+      eventListProvider.getAllEvents();
+    }
+
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;
 
-    List<String>eventNameList=
-    [
-      AppLocalizations.of(context)!.all,
-      AppLocalizations.of(context)!.sport,
-      AppLocalizations.of(context)!.birthday,
-      AppLocalizations.of(context)!.meeting,
-      AppLocalizations.of(context)!.gaming,
-      AppLocalizations.of(context)!.workshop,
-      AppLocalizations.of(context)!.book_club,
-      AppLocalizations.of(context)!.exhibition,
-      AppLocalizations.of(context)!.holiday,
-      AppLocalizations.of(context)!.eating,
-    ];
+
 
     return Scaffold(
       appBar: AppBar(
@@ -73,25 +75,22 @@ class _HomeTabState extends State<HomeTab> {
                 ],
               ),
               SizedBox(height: height*0.01,),
-              DefaultTabController(length: eventNameList.length,
+              DefaultTabController(length: eventListProvider.eventNameList.length,
                   child: TabBar(
                     onTap: (index){
-                      selectedIndex=index;
-                      setState(() {
-
-                      });
+                     eventListProvider.changeSelectedIndex(index);
                     },
                     indicatorColor: AppColors.transparentColor,
                     isScrollable: true,
                       tabAlignment: TabAlignment.start,
                       labelPadding: EdgeInsets.zero,
                       dividerColor: AppColors.transparentColor,
-                      tabs: eventNameList.map((eventName) {
+                      tabs: eventListProvider.eventNameList.map((eventName) {
                     return EventTabItem(selectedBgColor: Theme.of(context).focusColor,
                         selectedTextStyle: Theme.of(context).textTheme.headlineMedium!,
                         unSelectedTextStyle: Theme.of(context).textTheme.headlineSmall!,
 
-                        isSelected: selectedIndex==eventNameList.indexOf(eventName), eventName: eventName);
+                        isSelected: eventListProvider.selectedIndex==eventListProvider.eventNameList.indexOf(eventName), eventName: eventName);
                   },).toList()
                   )
               )
@@ -103,18 +102,24 @@ class _HomeTabState extends State<HomeTab> {
       body: Column(
         children: [
           Expanded(
-              child: ListView.separated(
-                padding: EdgeInsets.only(top: height*0.02),
-                  itemBuilder: (context, index) {
-                    return EventItem();
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: height*0.02);
-                  },
-                  itemCount: 20)),
+              child: Visibility(
+                child: eventListProvider.filterEventList.isEmpty?
+                    Center(child: Text(AppLocalizations.of(context)!.no_events_found,
+                    style: AppStyles.bold20Black,),):
+                ListView.separated(
+                  padding: EdgeInsets.only(top: height*0.02),
+                    itemBuilder: (context, index) {
+                      return EventItem(event:eventListProvider.filterEventList[index] ,);
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: height*0.02);
+                    },
+                    itemCount: eventListProvider.filterEventList.length),
+              )),
         ],
       ),
 
     );
   }
+
 }

@@ -14,7 +14,8 @@ class AppAssets{
   static const String favUnselectedIcon='assets/images/fav_unselected_icon.png';
   static const String profileUnselectedIcon='assets/images/profile_unselected_icon.png';
   static const String lightThemeIcon='assets/images/light_theme_icon.png';
-  static const String favIcon='assets/images/fav_icon.png';
+  static const String favIconEmpty='assets/images/fav_icon.png';
+  static const String favIconFill='assets/images/fav_icon_filled.png';
   static const String searchIcon='assets/images/search_icon.png';
   static const String logo='assets/images/Logo.png';
   static const String emailIcon='assets/images/email_icon.png';
@@ -54,6 +55,9 @@ class AppAssets{
   static const String timeIcon='assets/images/time_icon.png';
   static const String locationIcon='assets/images/location_icon.png';
   static const String forgetPasswordImage='assets/images/forget_password.png';
+  static const String updateIcon='assets/images/update_icon.png';
+  static const String deleteIcon='assets/images/delete_icon.png';
+  static const String mapImage='assets/images/map_image.png';
 
 
 

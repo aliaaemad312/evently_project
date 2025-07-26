@@ -10,7 +10,7 @@ class DateOrTimeWidget extends StatelessWidget {
    required this.iconDateOrTimeName,
      required this.eventDateOrTime,
      required this.chooseDateOrTime,
-     required this.onChooseDateOrTimeClicked
+     required this.onChooseDateOrTimeClicked,
    });
 
   @override

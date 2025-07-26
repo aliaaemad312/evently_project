@@ -52,5 +52,15 @@
   "choose_time": "Choose Time",
   "location": "Location",
   "choose_event_location":"Choose Event Location",
-  "add_event": "Add Event"
+  "add_event": "Add Event",
+  "please_enter_event_title": "Please Enter Event Title",
+  "please_add_description": "Please add description",
+  "event_added_successfully": "Event Added Successfully",
+  "no_events_found": "No Events Found Yet",
+  "event_updated_successfully": "Event Updated Successfully",
+  "no_favourite_events_found": "No Favourite Events Found Yet",
+  "event_details": "Event Details",
+  "edit_event": "Edit Event",
+  "update_event": "Update Event",
+  "event_deleted_successfully": "Event Deleted Successfully"
 }

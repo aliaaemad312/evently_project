@@ -1,15 +1,17 @@
+import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_text_form_field.dart';
 import 'package:evently_app/utils/app_assets.dart';
 import 'package:evently_app/utils/app_colors.dart';
 import 'package:evently_app/utils/app_styles.dart';
+import 'package:evently_app/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/app_theme_provider.dart';
 import '../../../utils/app_routes.dart';
 import '../../switchers/language_switcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterScreen extends StatefulWidget {
    RegisterScreen({super.key});
@@ -159,7 +161,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   ),
                   SizedBox(height: height*0.02,),
-                  CustomElevatedButton(onPressed:(){
+                  CustomElevatedButton(
+                    onPressed:(){
                     register();
 
                   }
@@ -195,9 +198,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void register() {
+  void register() async{
     if(formKey.currentState?.validate()==true){
-      Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
+      DialogUtils.showLoading(context: context, loadingText: 'Loading...');
+      try {
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        DialogUtils.hideLoading(context: context);
+        DialogUtils.showMessage(context: context,
+            message: ' register successfully',
+            title: 'Success!',
+            posActionName: 'Ok',
+            posAction: (){
+              Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
+            }
+        );
+
+       // print('id:${credential.user?.uid??''}');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          DialogUtils.hideLoading(context: context);
+          DialogUtils.showMessage(context: context, message: 'The password provided is too weak.',
+            title: 'Error!',
+            posActionName: 'Ok',);
+        } else if (e.code == 'email-already-in-use') {
+          DialogUtils.hideLoading(context: context);
+          DialogUtils.showMessage(context: context, message: 'The account already exists for that email.',
+            title: 'Error!',
+            posActionName: 'Ok',);
+        } else if (e.code == 'network-request-failed') {
+          DialogUtils.hideLoading(context: context);
+          DialogUtils.showMessage(context: context, message: 'A network error has occurred.',
+            title: 'Error!',
+            posActionName: 'Ok',);
+        } else if (e.code == 'invalid-credential') {
+          DialogUtils.hideLoading(context: context);
+          DialogUtils.showMessage(context: context, message: 'No user found for this email or wrong password',
+            title: 'Error!',
+            posActionName: 'Ok',);
+        }
+      } catch (e) {
+        DialogUtils.hideLoading(context: context);
+        DialogUtils.showMessage(context: context, message: e.toString(),
+          title: 'Error!',
+          posActionName: 'Ok',);
+      }
+      //Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
     }
   }
 }

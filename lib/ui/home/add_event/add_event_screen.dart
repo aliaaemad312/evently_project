@@ -1,3 +1,5 @@
+import 'package:evently_app/firebase_utils.dart';
+import 'package:evently_app/model/event.dart';
 import 'package:evently_app/ui/home/add_event/widget/date_or_time_widget.dart';
 import 'package:evently_app/ui/home/tabs/home_tab/widget/event_tab_item.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
@@ -5,12 +7,14 @@ import 'package:evently_app/ui/home/tabs/widgets/custom_text_form_field.dart';
 import 'package:evently_app/utils/app_assets.dart';
 import 'package:evently_app/utils/app_colors.dart';
 import 'package:evently_app/utils/app_styles.dart';
+import 'package:evently_app/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../providers/app_theme_provider.dart';
+import '../../../providers/event_list_provider.dart';
 
 class AddEventScreen extends StatefulWidget {
    AddEventScreen({super.key});
@@ -23,17 +27,21 @@ class _AddEventScreenState extends State<AddEventScreen> {
   int selectedIndex=0;
   TextEditingController titleController=TextEditingController();
   TextEditingController descriptionController=TextEditingController();
+  var formKey=GlobalKey<FormState>();
   DateTime? selectedDate;
   String formatedDate='';
   TimeOfDay? selectedTime;
   String formatedTime='';
-
+  String selectedImage='';
+  String selectedEventName='';
+  late EventListProvider eventListProvider;
 
   @override
   Widget build(BuildContext context) {
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;
     var themeProvider= Provider.of<AppThemeProvider>(context);
+     eventListProvider=Provider.of<EventListProvider>(context);
 
     List<String>eventNameList=
     [
@@ -72,6 +80,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
       AppAssets.eatingDark,
 
     ];
+     selectedImage=themeProvider.isDarkMode()?eventImageListDark[selectedIndex]:eventImageListLight[selectedIndex];
+     selectedEventName=eventNameList[selectedIndex];
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -94,7 +104,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
-                    themeProvider.isDarkMode()? eventImageListDark[selectedIndex]: eventImageListLight[selectedIndex]),
+                   selectedImage),
               ),
               SizedBox(height: height*0.02,),
               SizedBox(
@@ -123,79 +133,104 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   },
                   itemCount: eventNameList.length)),
               SizedBox(height: height*0.02,),
-              Text(AppLocalizations.of(context)!.title,
-              style: Theme.of(context).textTheme.titleMedium,),
-              SizedBox(height: height*0.01,),
-              CustomTextFormField(controller: titleController,
-                colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
-                hintText: AppLocalizations.of(context)!.event_title,
-                hintStyle: Theme.of(context).textTheme.bodyMedium,
-                prefixIcon: Image.asset(AppAssets.editIcon,
-                color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
-          
-              ),
-              SizedBox(height: height*0.02,),
-              Text(AppLocalizations.of(context)!.description,
-                style: Theme.of(context).textTheme.titleMedium,),
-              SizedBox(height: height*0.01,),
-              CustomTextFormField(controller: descriptionController,
-                hintText: AppLocalizations.of(context)!.event_description,
-                colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
-                hintStyle: Theme.of(context).textTheme.bodyMedium,
-                maxLines: 4,
-          
-          
-              ),
-              SizedBox(height: height*0.01,),
-              DateOrTimeWidget(
-                  iconDateOrTimeName: AppAssets.dateIcon,
-                  eventDateOrTime: AppLocalizations.of(context)!.event_date,
-                  chooseDateOrTime: selectedDate==null ? AppLocalizations.of(context)!.choose_date : formatedDate,
-                  // '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
-                  onChooseDateOrTimeClicked: chooseDate),
-              DateOrTimeWidget(
-                  iconDateOrTimeName: AppAssets.timeIcon,
-                  eventDateOrTime: AppLocalizations.of(context)!.event_time,
-                  chooseDateOrTime: selectedTime==null? AppLocalizations.of(context)!.choose_time : formatedTime,
-                  onChooseDateOrTimeClicked: chooseTime),
-              SizedBox(height: height*0.01,),
-              Text(AppLocalizations.of(context)!.location,
-              style: Theme.of(context).textTheme.titleMedium,),
-              SizedBox(height: height*0.01,),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: height*0.01,horizontal: width*0.02),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: AppColors.primaryLight,
-                    width: 1
-                  )
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: width*.03,vertical: width*.03),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: AppColors.primaryLight
-                      ),
-                      child: Image.asset(AppAssets.locationIcon),
+              Form(
+                key: formKey,
+                  child:
+                  Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(AppLocalizations.of(context)!.title,
+                    style: Theme.of(context).textTheme.titleMedium,),
+                  SizedBox(height: height*0.01,),
+                  CustomTextFormField(
+                    validator: (text) {
+                      if(text==null || text.trim().isEmpty){
+                        return AppLocalizations.of(context)!.please_enter_event_title;
+                      }
+                      return null;
+
+                    },
+                    controller: titleController,
+                    colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
+                    hintText: AppLocalizations.of(context)!.event_title,
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
+                    prefixIcon: Image.asset(AppAssets.editIcon,
+                      color: themeProvider.isDarkMode()?AppColors.whiteBgColor:AppColors.greyColor,),
+
+                  ),
+                  SizedBox(height: height*0.02,),
+                  Text(AppLocalizations.of(context)!.description,
+                    style: Theme.of(context).textTheme.titleMedium,),
+                  SizedBox(height: height*0.01,),
+                  CustomTextFormField(
+                    validator: (text) {
+                      if(text==null || text.trim().isEmpty){
+                        return AppLocalizations.of(context)!.please_add_description;
+                      }
+                      return null;
+
+                    },
+                    controller: descriptionController,
+                    hintText: AppLocalizations.of(context)!.event_description,
+                    colorBorderSide:themeProvider.isDarkMode()?AppColors.primaryLight:AppColors.greyColor,
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
+                    maxLines: 4,
+
+
+                  ),
+                  SizedBox(height: height*0.01,),
+                  DateOrTimeWidget(
+                      iconDateOrTimeName: AppAssets.dateIcon,
+                      eventDateOrTime: AppLocalizations.of(context)!.event_date,
+                      chooseDateOrTime: selectedDate==null ? AppLocalizations.of(context)!.choose_date : formatedDate,
+                      // '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
+                      onChooseDateOrTimeClicked: chooseDate),
+                  DateOrTimeWidget(
+                      iconDateOrTimeName: AppAssets.timeIcon,
+                      eventDateOrTime: AppLocalizations.of(context)!.event_time,
+                      chooseDateOrTime: selectedTime==null? AppLocalizations.of(context)!.choose_time : formatedTime,
+                      onChooseDateOrTimeClicked: chooseTime),
+                  SizedBox(height: height*0.01,),
+                  Text(AppLocalizations.of(context)!.location,
+                    style: Theme.of(context).textTheme.titleMedium,),
+                  SizedBox(height: height*0.01,),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: height*0.01,horizontal: width*0.02),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                            color: AppColors.primaryLight,
+                            width: 1
+                        )
                     ),
-                    SizedBox(width: width*0.02,),
-                    Text(AppLocalizations.of(context)!.choose_event_location,
-                    style: AppStyles.medium16Primary,),
-                    Spacer(),
-                    Icon(Icons.arrow_forward_ios_rounded,
-                      color: AppColors.primaryLight,)
-                  ],
-                ),
-              ),
-              SizedBox(height: height*0.02,),
-              CustomElevatedButton(
-                  onPressed: (){
-                    addEvent();
-                  },
-                  text: AppLocalizations.of(context)!.add_event),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: width*.03,vertical: width*.03),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: AppColors.primaryLight
+                          ),
+                          child: Image.asset(AppAssets.locationIcon),
+                        ),
+                        SizedBox(width: width*0.02,),
+                        Text(AppLocalizations.of(context)!.choose_event_location,
+                          style: AppStyles.medium16Primary,),
+                        Spacer(),
+                        Icon(Icons.arrow_forward_ios_rounded,
+                          color: AppColors.primaryLight,)
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: height*0.02,),
+                  CustomElevatedButton(
+                      onPressed: (){
+                        addEvent();
+                      },
+                      text: AppLocalizations.of(context)!.add_event),
+                ],
+              )),
+
               SizedBox(height: height*0.02,),
             ],
           ),
@@ -216,6 +251,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       setState(() {
 
       });
+
     }
 
 
@@ -237,6 +273,32 @@ class _AddEventScreenState extends State<AddEventScreen> {
   }
 
   void addEvent() {
+    if(formKey.currentState?.validate()==true){
+      Event event=Event(
+          title: titleController.text,
+          description: descriptionController.text,
+          eventName: selectedEventName,
+          image: selectedImage,
+          dateTime: selectedDate!,
+          time: formatedTime
+      );
+      FirebaseUtils.addEventToFireStore(event).
+      timeout(
+          Duration(milliseconds: 500),
+          onTimeout: () {
+            ToastUtils.toastMsg(
+                msg:AppLocalizations.of(context)!.event_added_successfully,
+                backgroundColor: AppColors.primaryLight,
+                textColor: AppColors.whiteColor
+            );
+            eventListProvider.getAllEvents();
+
+            Navigator.pop(context);
+
+          });
+
+
+    }
 
   }
 }

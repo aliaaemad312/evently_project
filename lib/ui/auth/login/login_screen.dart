@@ -1,3 +1,4 @@
+import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/app_language_provider.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_text_form_field.dart';
@@ -6,11 +7,13 @@ import 'package:evently_app/utils/app_assets.dart';
 import 'package:evently_app/utils/app_colors.dart';
 import 'package:evently_app/utils/app_routes.dart';
 import 'package:evently_app/utils/app_styles.dart';
+import 'package:evently_app/utils/dialog_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-
 import '../../../providers/app_theme_provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
    LoginScreen({super.key});
@@ -163,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor: AppColors.transparentColor,
                       textStyle: AppStyles.medium20Primary,
                       onPressed: () {
-                        login();
+                        googleLogin();
 
                       },text: AppLocalizations.of(context)!.login_google,
                     ),
@@ -183,10 +186,83 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void login() {
+  void login() async{
     if(formKey.currentState?.validate()==true){
-      Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
+      DialogUtils.showLoading(context: context, loadingText: 'Loading...');
+      try {
+        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text
+        );
+        DialogUtils.hideLoading(context: context);
+        DialogUtils.showMessage(context: context, message: 'login successfully',
+            title: 'Success!',
+            posActionName: 'Ok',
+            posAction: (){
+              Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
+            });
+
+       // print('id:${credential.user?.uid??''}');
+      }
+      on FirebaseAuthException catch (e) {
+        if (e.code == 'network-request-failed') {
+          DialogUtils.hideLoading(context: context);
+          DialogUtils.showMessage(context: context, message: 'A network error has occurred.',
+            title: 'Error!',
+            posActionName: 'Ok',);
+
+         } else if (e.code == 'invalid-credential') {
+          DialogUtils.hideLoading(context: context);
+          DialogUtils.showMessage(context: context, message: ' No user found for this email or wrong password',
+            title: 'Error!',
+            posActionName: 'Ok',);
+
+         }
+
+       }
+      catch(e){
+        DialogUtils.hideLoading(context: context);
+        DialogUtils.showMessage(context: context, message:e.toString(),
+          title: 'Error!',
+          posActionName: 'Ok',);
+
+      }
+
+
+      //Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
 
     }
   }
+
+   void googleLogin() async {
+       try {
+         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+         if (googleUser == null) {
+           print('Login canceled by user');
+           return;
+         }
+
+         final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+         final credential = GoogleAuthProvider.credential(
+           accessToken: googleAuth.accessToken,
+           idToken: googleAuth.idToken,
+         );
+
+         final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+         DialogUtils.showMessage(context: context, message: 'login successfully',
+             title: 'Success!',
+             posActionName: 'Ok',
+             posAction: (){
+               Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
+             });
+
+        // print('Signed in as ${userCredential.user?.displayName}');
+       } catch (e) {
+         print('Google Sign-In Error: $e');
+       }
+
+   }
+
 }
