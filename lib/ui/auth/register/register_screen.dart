@@ -1,4 +1,6 @@
+import 'package:evently_app/firebase_utils.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/model/my_user.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_text_form_field.dart';
 import 'package:evently_app/utils/app_assets.dart';
@@ -9,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/app_theme_provider.dart';
+import '../../../providers/event_list_provider.dart';
+import '../../../providers/user_provider.dart';
 import '../../../utils/app_routes.dart';
 import '../../switchers/language_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -206,13 +210,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
           email: emailController.text,
           password: passwordController.text,
         );
+        MyUser myUser=MyUser(
+            id: credential.user?.uid??'',
+            name: nameController.text,
+            email: emailController.text
+        );
+       await FirebaseUtils.addUserToFireStore(myUser);
+        var userProvider= Provider.of<UserProvider>(context,listen: false);
+        userProvider.updateUser(myUser);
+        var eventListProvider= Provider.of<EventListProvider>(context,listen: false);
+        eventListProvider.changeSelectedIndex(0, userProvider.currentUser!.id);
+        eventListProvider.getAllFavouriteEvents(userProvider.currentUser!.id);
+
         DialogUtils.hideLoading(context: context);
         DialogUtils.showMessage(context: context,
             message: ' register successfully',
             title: 'Success!',
             posActionName: 'Ok',
             posAction: (){
-              Navigator.of(context).pushReplacementNamed(AppRoutes.homeRouteName);
+              Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.homeRouteName,(route) => false,);
             }
         );
 

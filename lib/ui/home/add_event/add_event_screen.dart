@@ -1,5 +1,6 @@
 import 'package:evently_app/firebase_utils.dart';
 import 'package:evently_app/model/event.dart';
+import 'package:evently_app/providers/user_provider.dart';
 import 'package:evently_app/ui/home/add_event/widget/date_or_time_widget.dart';
 import 'package:evently_app/ui/home/tabs/home_tab/widget/event_tab_item.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
@@ -282,20 +283,31 @@ class _AddEventScreenState extends State<AddEventScreen> {
           dateTime: selectedDate!,
           time: formatedTime
       );
-      FirebaseUtils.addEventToFireStore(event).
-      timeout(
-          Duration(milliseconds: 500),
-          onTimeout: () {
-            ToastUtils.toastMsg(
-                msg:AppLocalizations.of(context)!.event_added_successfully,
-                backgroundColor: AppColors.primaryLight,
-                textColor: AppColors.whiteColor
-            );
-            eventListProvider.getAllEvents();
+      var userProvider=Provider.of<UserProvider>(context,listen: false);
+      FirebaseUtils.addEventToFireStore(event,userProvider.currentUser!.id)
+          .then((value) {
+        ToastUtils.toastMsg(
+            msg:AppLocalizations.of(context)!.event_added_successfully,
+            backgroundColor: AppColors.primaryLight,
+            textColor: AppColors.whiteColor
+        );
+        eventListProvider.getAllEvents(userProvider.currentUser!.id);
 
-            Navigator.pop(context);
-
-          });
+        Navigator.pop(context);
+          },);
+     // .timeout(
+     //      Duration(milliseconds: 500),
+     //      onTimeout: () {
+     //        ToastUtils.toastMsg(
+     //            msg:AppLocalizations.of(context)!.event_added_successfully,
+     //            backgroundColor: AppColors.primaryLight,
+     //            textColor: AppColors.whiteColor
+     //        );
+     //        eventListProvider.getAllEvents();
+     //
+     //        Navigator.pop(context);
+     //
+     //      });
 
 
     }

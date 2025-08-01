@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/event.dart';
+import '../../../providers/user_provider.dart';
 import '../../../utils/toast_utils.dart';
 
 class EventDetailsScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class EventDetailsScreen extends StatefulWidget {
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   late Event event;
   late EventListProvider eventListProvider;
+  late UserProvider userProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -181,13 +183,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   }
 
   void deleteEvent()async {
-   await FirebaseUtils.deleteEventFromFireStore(event);
+    userProvider=Provider.of<UserProvider>(context);
+   await FirebaseUtils.deleteEventFromFireStore(event,userProvider.currentUser!.id);
           ToastUtils.toastMsg(
               msg: AppLocalizations.of(context)!.event_deleted_successfully,
               backgroundColor: AppColors.redColor,
               textColor: AppColors.whiteColor
           );
-          eventListProvider.getAllEvents();
+          eventListProvider.getAllEvents(userProvider.currentUser!.id);
           Navigator.pop(context);
 
   }

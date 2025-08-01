@@ -1,5 +1,7 @@
+import 'package:evently_app/firebase_utils.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/app_language_provider.dart';
+import 'package:evently_app/providers/event_list_provider.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_text_form_field.dart';
 import 'package:evently_app/ui/switchers/language_switcher.dart';
@@ -14,6 +16,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/app_theme_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../../providers/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
    LoginScreen({super.key});
@@ -35,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var width=MediaQuery.of(context).size.width;
     var languageProvide= Provider.of<AppLanguageProvider>(context);
     var themeProvider= Provider.of<AppThemeProvider>(context);
+
 
     return Scaffold(
       body: SafeArea(
@@ -194,6 +199,16 @@ class _LoginScreenState extends State<LoginScreen> {
             email: emailController.text,
             password: passwordController.text
         );
+       var user=await FirebaseUtils.readUserFromFireStore(credential.user?.uid??'');
+       if(user==null){
+         return;
+       }
+        var userProvider= Provider.of<UserProvider>(context,listen: false);
+       userProvider.updateUser(user);
+        var eventListProvider= Provider.of<EventListProvider>(context,listen: false);
+        eventListProvider.changeSelectedIndex(0, userProvider.currentUser!.id);
+        eventListProvider.getAllFavouriteEvents(userProvider.currentUser!.id);
+
         DialogUtils.hideLoading(context: context);
         DialogUtils.showMessage(context: context, message: 'login successfully',
             title: 'Success!',

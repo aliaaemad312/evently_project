@@ -1,15 +1,18 @@
 
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/providers/event_list_provider.dart';
 import 'package:evently_app/ui/home/tabs/language/language_bottom_sheet.dart';
 import 'package:evently_app/ui/home/tabs/theme/theme_bottom_sheet.dart';
 import 'package:evently_app/ui/home/tabs/widgets/custom_elevated_button.dart';
 import 'package:evently_app/utils/app_assets.dart';
 import 'package:evently_app/utils/app_colors.dart';
+import 'package:evently_app/utils/app_routes.dart';
 import 'package:evently_app/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../../providers/app_language_provider.dart';
 import '../../../../../providers/app_theme_provider.dart';
+import '../../../../providers/user_provider.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -25,6 +28,8 @@ class _ProfileTabState extends State<ProfileTab> {
     var width =MediaQuery.of(context).size.width;
     var languageProvide= Provider.of<AppLanguageProvider>(context);
     var themeProvider= Provider.of<AppThemeProvider>(context);
+    var userProvider= Provider.of<UserProvider>(context);
+    var eventListProvider= Provider.of<EventListProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,9 +47,9 @@ class _ProfileTabState extends State<ProfileTab> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Route Academy',style: AppStyles.bold24White,),
+                  Text(userProvider.currentUser!.name,style: AppStyles.bold24White,),
                   SizedBox(height: height*0.01,),
-                  Text('route@gmail.com',
+                  Text(userProvider.currentUser!.email,
                       style: AppStyles.medium16White,
                       overflow: TextOverflow.ellipsis)
                 ],
@@ -121,7 +126,9 @@ class _ProfileTabState extends State<ProfileTab> {
             ),
             Spacer(),
             CustomElevatedButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.loginRouteName, (route) => false,);
+                },
                 backgroundColor: AppColors.redColor,
                 borderColor: AppColors.redColor,
                 icon: true,

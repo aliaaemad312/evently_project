@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../model/event.dart';
+import '../../../../providers/user_provider.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -26,13 +27,14 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     var eventListProvider=Provider.of<EventListProvider>(context);
-    eventListProvider.getEventNameList(context);
-    if(eventListProvider.eventsList.isEmpty){
-      eventListProvider.getAllEvents();
-    }
-
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;
+    var userProvider= Provider.of<UserProvider>(context);
+    eventListProvider.getEventNameList(context);
+    if(eventListProvider.eventsList.isEmpty){
+      eventListProvider.getAllEvents(userProvider.currentUser!.id);
+    }
+
 
 
 
@@ -44,7 +46,7 @@ class _HomeTabState extends State<HomeTab> {
           children: [
             Text(AppLocalizations.of(context)!.welcome_back,
             style: AppStyles.regular14White,),
-            Text('Route Academy',
+            Text(userProvider.currentUser!.name,
             style: AppStyles.bold24White,),
           ],
         ),
@@ -78,7 +80,7 @@ class _HomeTabState extends State<HomeTab> {
               DefaultTabController(length: eventListProvider.eventNameList.length,
                   child: TabBar(
                     onTap: (index){
-                     eventListProvider.changeSelectedIndex(index);
+                     eventListProvider.changeSelectedIndex(index,userProvider.currentUser!.id);
                     },
                     indicatorColor: AppColors.transparentColor,
                     isScrollable: true,

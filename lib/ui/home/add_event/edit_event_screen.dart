@@ -1,3 +1,4 @@
+import 'package:evently_app/providers/user_provider.dart';
 import 'package:evently_app/ui/home/add_event/widget/date_or_time_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -48,6 +49,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   late EventListProvider eventListProvider;
 
   late Event event;
+   late UserProvider userProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -296,14 +298,15 @@ class _EditEventScreenState extends State<EditEventScreen> {
       event.dateTime=selectedDate!;
       event.description=descriptionController.text;
       event.time=selectedTime!=null ?formatedTime:event.time;
-      await FirebaseUtils.updateEventInFireStore(event);
+       userProvider=Provider.of<UserProvider>(context);
+      await FirebaseUtils.updateEventInFireStore(event,userProvider.currentUser!.id);
 
             ToastUtils.toastMsg(
                 msg:AppLocalizations.of(context)!.event_updated_successfully,
                 backgroundColor: AppColors.primaryLight,
                 textColor: AppColors.whiteColor
             );
-            eventListProvider.getAllEvents();
+            eventListProvider.getAllEvents(userProvider.currentUser!.id);
 
             Navigator.pop(context);
 

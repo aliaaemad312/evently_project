@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../providers/user_provider.dart';
+
 class EventItem extends StatelessWidget {
   Event event;
    EventItem({super.key,required this.event});
@@ -17,6 +19,7 @@ class EventItem extends StatelessWidget {
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;
     var eventListProvider=Provider.of<EventListProvider>(context);
+    var userProvider=Provider.of<UserProvider>(context);
     return InkWell(
       onTap: (){
         Navigator.of(context).pushNamed(AppRoutes.eventDetailsRouteName,arguments: event);
@@ -73,7 +76,7 @@ class EventItem extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: (){
-                      eventListProvider.updateIsFavourite(event);
+                      eventListProvider.updateIsFavourite(event,userProvider.currentUser!.id);
                     },
                       child:event.isFavourite == true ?
                           SizedBox(
